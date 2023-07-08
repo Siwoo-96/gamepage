@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +28,7 @@
             background-color: darkblue;
         }
 
-        header > button {
+        header>button {
             width: 50px;
             height: 50px;
 
@@ -36,7 +37,7 @@
             margin: 0px 30px 0px 20px;
         }
 
-        header > .title {
+        header>.title {
             width: 400px;
             height: 50px;
 
@@ -141,7 +142,7 @@
             margin-left: 60px;
         }
 
-        .footer_top > button {
+        .footer_top>button {
             width: 35px;
             height: 35px;
 
@@ -159,7 +160,7 @@
             align-items: center;
         }
 
-        .footer_bottom > button {
+        .footer_bottom>button {
             width: 80px;
             height: 80px;
 
@@ -204,7 +205,7 @@
             border-radius: 0px 0px 30px 30px;
         }
 
-        .clear_btn > button {
+        .clear_btn>button {
             width: 100px;
             height: 50px;
 
@@ -226,308 +227,309 @@
 </head>
 
 <body>
-<header>
-    <button type="button" class="back">⇦</button>
-    <div class="title">토끼</div>
-</header>
+    <header>
+        <button type="button" class="back">⇦</button>
+        <div class="title">토끼</div>
+    </header>
 
-<main class="box">
-    <div class="block"></div>
-    <div class="top_box"></div>
-    <div class="side_box"></div>
-    <div class="mid_box"></div>
-</main>
+    <main class="box">
+        <div class="block"></div>
+        <div class="top_box"></div>
+        <div class="side_box"></div>
+        <div class="mid_box"></div>
+    </main>
 
-<div class="footer">
-    <div class="footer_top">
-        <button type="button" class="before" disabled>←</button>
-        <button type="button" class="after" disabled>→</button>
+    <div class="footer">
+        <div class="footer_top">
+            <button type="button" class="before" disabled>←</button>
+            <button type="button" class="after" disabled>→</button>
+        </div>
+        <div class="footer_bottom">
+            <button type="button" class="btn">✖︎</button>
+            <button type="button" class="btn">❓</button>
+            <button type="button" class="btn green">✔️</button>
+        </div>
+
     </div>
-    <div class="footer_bottom">
-        <button type="button" class="btn">✖︎</button>
-        <button type="button" class="btn">❓</button>
-        <button type="button" class="btn green">✔️</button>
+    <div class="clear hidden">
+        <div class="clear_title">CLEAR</div>
+        <div class="clear_btn">
+            <button type="button" class="replay">다시하기</button>
+            <button type="button" class="list">목록으로</button>
+        </div>
     </div>
+    <script src="db.js"></script>
+    <script>
+        let datas = JSON.parse(localStorage.getItem('nemologic')) || [];
+        let getId = Number(localStorage.getItem('id')) - 1;
 
-</div>
-<div class="clear hidden">
-    <div class="clear_title">CLEAR</div>
-    <div class="clear_btn">
-        <button type="button" class="replay">다시하기</button>
-        <button type="button" class="list">목록으로</button>
-    </div>
-</div>
-<script src="db.js"></script>
-<script>
-    let datas = JSON.parse(localStorage.getItem('nemologic')) || [];
-    let getId = Number(localStorage.getItem('id')) - 1;
+        const title = document.querySelector('.title');
+        title.textContent = datas[getId].title;
 
-    const title = document.querySelector('.title');
-    title.textContent = datas[getId].title;
+        const top_box = document.querySelector('.top_box');
+        const side_box = document.querySelector('.side_box');
 
-    const top_box = document.querySelector('.top_box');
-    const side_box = document.querySelector('.side_box');
+        const topnum = datas[getId].topnum;
+        const sidenum = datas[getId].sidenum;
 
-    const topnum = datas[getId].topnum;
-    const sidenum = datas[getId].sidenum;
-
-    function creatBox() {
-        for (let i = 0; i < topnum.length; i++) {
-            const div = document.createElement('div');
-            div.classList.add('top_item');
-            div.textContent = topnum[i] === 0 ? '' : topnum[i];
-
-            top_box.appendChild(div);
-        }
-
-        for (let i = 0; i < sidenum.length; i++) {
-            const div = document.createElement('div');
-            div.classList.add('side_item');
-            div.textContent = sidenum[i] === 0 ? '' : sidenum[i];
-
-            side_box.appendChild(div);
-        }
-    }
-
-    creatBox();
-
-    const midBox = document.querySelector('.mid_box');
-    let boxData = datas[getId].datas ? datas[getId].datas : (new Array(10).fill(0)).map(_ => new Array(10).fill(0));
-
-    function creatItem() {
-        midBox.textContent = '';
-
-        for (let i = 0; i < boxData.length; i++) {
-            for (let j = 0; j < boxData[i].length; j++) {
+        function creatBox() {
+            for (let i = 0; i < topnum.length; i++) {
                 const div = document.createElement('div');
-                div.classList.add('mid_item');
-                div.dataset.no = `${i * 10 + j}`;
+                div.classList.add('top_item');
+                div.textContent = topnum[i] === 0 ? '' : topnum[i];
 
-                if (boxData[i][j] === 1) {
-                    div.classList.add('black');
-                    div.textContent = ''
-                } else if (boxData[i][j] === 2) {
-                    div.classList.remove('black');
-                    div.textContent = 'X'
-                } else if (boxData[i][j] === 3) {
-                    div.classList.remove('black');
-                    div.textContent = '?'
-                }
+                top_box.appendChild(div);
+            }
 
-                midBox.appendChild(div);
+            for (let i = 0; i < sidenum.length; i++) {
+                const div = document.createElement('div');
+                div.classList.add('side_item');
+                div.textContent = sidenum[i] === 0 ? '' : sidenum[i];
+
+                side_box.appendChild(div);
             }
         }
-    }
 
-    creatItem();
+        creatBox();
 
-    const footer = document.querySelector('.footer');
-    const btn = document.querySelectorAll('.btn');
+        const midBox = document.querySelector('.mid_box');
+        let boxData = datas[getId].datas ? datas[getId].datas : (new Array(10).fill(0)).map(_ => new Array(10).fill(0));
 
-    footer.addEventListener('click', ({target}) => {
-        if (!target.classList.contains('btn')) {
-            return;
-        }
+        function creatItem() {
+            midBox.textContent = '';
 
-        for (let i = 0; i < btn.length; i++) {
-            btn[i].classList.remove('green');
-        }
+            for (let i = 0; i < boxData.length; i++) {
+                for (let j = 0; j < boxData[i].length; j++) {
+                    const div = document.createElement('div');
+                    div.classList.add('mid_item');
+                    div.dataset.no = `${i * 10 + j}`;
 
-        target.classList.add('green');
-    })
-
-    let clicked = false;
-
-    midBox.addEventListener('mousedown', (event) => {
-        clicked = true;
-        if (!clicked) {
-            return;
-        }
-        draw(event);
-
-    });
-
-    midBox.addEventListener('mouseup', () => {
-        clicked = false;
-        creatItem();
-    });
-
-    midBox.addEventListener('mouseleave', () => {
-        clicked = false;
-    });
-
-    midBox.addEventListener('mouseover', function (event) {
-        if (!clicked) {
-            return;
-        }
-        draw(event);
-    })
-
-    function comparison(target) {
-        const no = Number(target.dataset.no);
-
-        const ii = Math.trunc(no / 10);
-        const jj = no % 10;
-
-        for (let i = 0; i < btn.length; i++) {
-            if (btn[i].classList.contains('green')) {
-                if (btn[i].textContent === '✔️') {
-                    if (target.classList.contains('black')) {
-                        target.classList.remove('black');
-                        boxData[ii][jj] = 0;
-                    } else if (target.textContent !== '') {
-                        target.textContent = '';
-                        boxData[ii][jj] = 0;
-                    } else {
-                        target.classList.add('black');
-                        target.textContent = '';
-                        boxData[ii][jj] = 1;
+                    if (boxData[i][j] === 1) {
+                        div.classList.add('black');
+                        div.textContent = ''
+                    } else if (boxData[i][j] === 2) {
+                        div.classList.remove('black');
+                        div.textContent = 'X'
+                    } else if (boxData[i][j] === 3) {
+                        div.classList.remove('black');
+                        div.textContent = '?'
                     }
-                } else if (btn[i].textContent === '✖︎') {
-                    if (target.classList.contains('black')) {
-                        target.classList.remove('black');
-                        boxData[ii][jj] = 0;
-                    } else if (target.textContent !== '') {
-                        target.textContent = '';
-                        boxData[ii][jj] = 0;
-                    } else {
-                        target.textContent = 'X';
-                        target.classList.remove('black');
-                        boxData[ii][jj] = 2;
-                    }
-                } else if (btn[i].textContent === '❓') {
-                    if (target.classList.contains('black')) {
-                        target.classList.remove('black');
-                        boxData[ii][jj] = 0;
-                    } else if (target.textContent !== '') {
-                        target.textContent = '';
-                        boxData[ii][jj] = 0;
-                    } else {
-                        target.textContent = '?';
-                        target.classList.remove('black');
-                        boxData[ii][jj] = 3;
-                    }
-                }
-            }
-        }
-    }
 
-    const clear = document.querySelector('.clear');
-
-    const undoDatas = JSON.parse(localStorage.getItem('undo')) || [];
-    const redoDatas = JSON.parse(localStorage.getItem('redo')) || [];
-    const before = document.querySelector('.before');
-    function draw(event) {
-        let target = event.target;
-
-        if (!target.classList.contains('mid_item')) {
-            return;
-        }
-
-        if (!clear.classList.contains('hidden')) {
-            return;
-        }
-
-        undoDatas.push(JSON.stringify(boxData));
-        localStorage.setItem('undo', JSON.stringify(undoDatas));
-        before.removeAttribute('disabled');
-        after.removeAttribute('disabled');
-
-        comparison(target);
-        datas[getId].datas = boxData;
-        datas[getId].clear = 2;
-        localStorage.setItem('nemologic', JSON.stringify(datas));
-
-        const check = datas[getId].check;
-
-        for (let i = 0; i < boxData.length; i++) {
-            for (let j = 0; j < boxData[i].length; j++) {
-                let num = boxData[i][j];
-
-                if (boxData[i][j] === 2 || boxData[i][j] === 3) {
-                    num = 0;
-                }
-
-                if (num !== check[i][j]) {
-                    return;
+                    midBox.appendChild(div);
                 }
             }
         }
 
-        clear.classList.remove('hidden');
-        datas[getId].clear = 3;
-        localStorage.setItem('nemologic', JSON.stringify(datas));
-    }
-
-    const replay = document.querySelector('.replay');
-
-    replay.addEventListener('click', () => {
-        datas[getId].datas = null;
-        datas[getId].clear = 1;
-        localStorage.setItem('nemologic', JSON.stringify(datas));
-        clear.classList.add('hidden');
-
-        boxData = datas[getId].datas ? datas[getId].datas : (new Array(10).fill(0)).map(_ => new Array(10).fill(0));
-
-        creatItem();
-    });
-
-    const back = document.querySelector('.back');
-
-    back.addEventListener('click', () => {
-        document.location = "main.html";
-    });
-
-    const list = document.querySelector('.list');
-
-    list.addEventListener('click', () => {
-        document.location = "main.html";
-    });
-
-    before.addEventListener('click', () => {
-        if (undoDatas.length === 0) {
-            return;
-        }
-
-        redoDatas.push(JSON.stringify(boxData));
-        localStorage.setItem('redo', JSON.stringify(redoDatas));
-        after.removeAttribute('disabled');
-
-        boxData = JSON.parse(undoDatas.pop());
-        if (undoDatas.length === 0) {
-            before.setAttribute('disabled', 'true');
-        }
-        localStorage.setItem('undo', JSON.stringify(undoDatas));
         creatItem();
 
-        datas[getId].datas = boxData;
-        localStorage.setItem('nemologic', JSON.stringify(datas));
-    });
+        const footer = document.querySelector('.footer');
+        const btn = document.querySelectorAll('.btn');
 
-    const after = document.querySelector('.after');
+        footer.addEventListener('click', ({ target }) => {
+            if (!target.classList.contains('btn')) {
+                return;
+            }
 
-    after.addEventListener('click', () => {
-        if (redoDatas.length === 0) {
-            return;
+            for (let i = 0; i < btn.length; i++) {
+                btn[i].classList.remove('green');
+            }
+
+            target.classList.add('green');
+        })
+
+        let clicked = false;
+
+        midBox.addEventListener('mousedown', (event) => {
+            clicked = true;
+            if (!clicked) {
+                return;
+            }
+            draw(event);
+
+        });
+
+        midBox.addEventListener('mouseup', () => {
+            clicked = false;
+            creatItem();
+        });
+
+        midBox.addEventListener('mouseleave', () => {
+            clicked = false;
+        });
+
+        midBox.addEventListener('mouseover', function (event) {
+            if (!clicked) {
+                return;
+            }
+            draw(event);
+        })
+
+        function comparison(target) {
+            const no = Number(target.dataset.no);
+
+            const ii = Math.trunc(no / 10);
+            const jj = no % 10;
+
+            for (let i = 0; i < btn.length; i++) {
+                if (btn[i].classList.contains('green')) {
+                    if (btn[i].textContent === '✔️') {
+                        if (target.classList.contains('black')) {
+                            target.classList.remove('black');
+                            boxData[ii][jj] = 0;
+                        } else if (target.textContent !== '') {
+                            target.textContent = '';
+                            boxData[ii][jj] = 0;
+                        } else {
+                            target.classList.add('black');
+                            target.textContent = '';
+                            boxData[ii][jj] = 1;
+                        }
+                    } else if (btn[i].textContent === '✖︎') {
+                        if (target.classList.contains('black')) {
+                            target.classList.remove('black');
+                            boxData[ii][jj] = 0;
+                        } else if (target.textContent !== '') {
+                            target.textContent = '';
+                            boxData[ii][jj] = 0;
+                        } else {
+                            target.textContent = 'X';
+                            target.classList.remove('black');
+                            boxData[ii][jj] = 2;
+                        }
+                    } else if (btn[i].textContent === '❓') {
+                        if (target.classList.contains('black')) {
+                            target.classList.remove('black');
+                            boxData[ii][jj] = 0;
+                        } else if (target.textContent !== '') {
+                            target.textContent = '';
+                            boxData[ii][jj] = 0;
+                        } else {
+                            target.textContent = '?';
+                            target.classList.remove('black');
+                            boxData[ii][jj] = 3;
+                        }
+                    }
+                }
+            }
         }
 
-        undoDatas.push(JSON.stringify(boxData));
-        localStorage.setItem('undo', JSON.stringify(undoDatas));
-        before.removeAttribute('disabled');
+        const clear = document.querySelector('.clear');
 
-        boxData = JSON.parse(redoDatas.pop());
-        if (redoDatas.length === 0) {
-            after.setAttribute('disabled', 'true');
+        const undoDatas = JSON.parse(localStorage.getItem('undo')) || [];
+        const redoDatas = JSON.parse(localStorage.getItem('redo')) || [];
+        const before = document.querySelector('.before');
+        function draw(event) {
+            let target = event.target;
+
+            if (!target.classList.contains('mid_item')) {
+                return;
+            }
+
+            if (!clear.classList.contains('hidden')) {
+                return;
+            }
+
+            undoDatas.push(JSON.stringify(boxData));
+            localStorage.setItem('undo', JSON.stringify(undoDatas));
+            before.removeAttribute('disabled');
+            after.removeAttribute('disabled');
+
+            comparison(target);
+            datas[getId].datas = boxData;
+            datas[getId].clear = 2;
+            localStorage.setItem('nemologic', JSON.stringify(datas));
+
+            const check = datas[getId].check;
+
+            for (let i = 0; i < boxData.length; i++) {
+                for (let j = 0; j < boxData[i].length; j++) {
+                    let num = boxData[i][j];
+
+                    if (boxData[i][j] === 2 || boxData[i][j] === 3) {
+                        num = 0;
+                    }
+
+                    if (num !== check[i][j]) {
+                        return;
+                    }
+                }
+            }
+
+            clear.classList.remove('hidden');
+            datas[getId].clear = 3;
+            localStorage.setItem('nemologic', JSON.stringify(datas));
         }
-        localStorage.setItem('redo', JSON.stringify(redoDatas));
-        creatItem();
 
-        datas[getId].datas = boxData;
-        localStorage.setItem('nemologic', JSON.stringify(datas));
-    });
+        const replay = document.querySelector('.replay');
 
-</script>
+        replay.addEventListener('click', () => {
+            datas[getId].datas = null;
+            datas[getId].clear = 1;
+            localStorage.setItem('nemologic', JSON.stringify(datas));
+            clear.classList.add('hidden');
+
+            boxData = datas[getId].datas ? datas[getId].datas : (new Array(10).fill(0)).map(_ => new Array(10).fill(0));
+
+            creatItem();
+        });
+
+        const back = document.querySelector('.back');
+
+        back.addEventListener('click', () => {
+            location.href = "https://siwoo-96.github.io/logic/"
+        });
+
+        const list = document.querySelector('.list');
+
+        list.addEventListener('click', () => {
+            location.href = "https://siwoo-96.github.io/logic/"
+        });
+
+        before.addEventListener('click', () => {
+            if (undoDatas.length === 0) {
+                return;
+            }
+
+            redoDatas.push(JSON.stringify(boxData));
+            localStorage.setItem('redo', JSON.stringify(redoDatas));
+            after.removeAttribute('disabled');
+
+            boxData = JSON.parse(undoDatas.pop());
+            if (undoDatas.length === 0) {
+                before.setAttribute('disabled', 'true');
+            }
+            localStorage.setItem('undo', JSON.stringify(undoDatas));
+            creatItem();
+
+            datas[getId].datas = boxData;
+            localStorage.setItem('nemologic', JSON.stringify(datas));
+        });
+
+        const after = document.querySelector('.after');
+
+        after.addEventListener('click', () => {
+            if (redoDatas.length === 0) {
+                return;
+            }
+
+            undoDatas.push(JSON.stringify(boxData));
+            localStorage.setItem('undo', JSON.stringify(undoDatas));
+            before.removeAttribute('disabled');
+
+            boxData = JSON.parse(redoDatas.pop());
+            if (redoDatas.length === 0) {
+                after.setAttribute('disabled', 'true');
+            }
+            localStorage.setItem('redo', JSON.stringify(redoDatas));
+            creatItem();
+
+            datas[getId].datas = boxData;
+            localStorage.setItem('nemologic', JSON.stringify(datas));
+        });
+
+    </script>
 </body>
+
 </html>
 
 
